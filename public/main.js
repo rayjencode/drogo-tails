@@ -6,6 +6,9 @@ const app = electron.app;
 // Module to create native browser window. 
 const BrowserWindow = electron.BrowserWindow;
 
+// declare what environment our app is working
+const env = process.env.ENV;
+
 // Keep a global reference of the window object,  
 // if you don't, the window will be closed automatically 
 // when the JavaScript object is garbage collected. 
@@ -15,7 +18,8 @@ var mainWindow = null;
 app.on('window-all-closed', function () {
     // On OS X it is common for applications and their 
     // menu barto stay active until the user quits  
-    // explicitly with Cmd + Q if (process.platform != 'darwin') 
+    // explicitly with Cmd + Q 
+    if (process.platform != 'darwin') 
     {
         app.quit();
     }
@@ -28,10 +32,14 @@ app.on('ready', function () {
     mainWindow = new BrowserWindow({ width: 800, height: 600 });
 
     // and load the index.html of the app. 
-    mainWindow.loadURL(process.env.ELECTRON_START_URL);
+    const url = env == 'development' ? process.env.ELECTRON_START_URL : __dirname + "/index.html";
+    
+    mainWindow.loadURL(url);
 
-    // Open the DevTools. 
-    // mainWindow.webContents.openDevTools(); 
+    if (env == 'development') {
+        // Open the DevTools. 
+        mainWindow.webContents.openDevTools(); 
+    }
 
     // Emitted when the window is closed. 
     mainWindow.on('closed', function () {
