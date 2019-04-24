@@ -16,6 +16,7 @@
   "scripts": {
     "start:react": "export BROWSER=none && react-scripts start",
     "start:electron": "export ENV=development && export ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "dev": "concurrently \"yarn start:react\" \"wait-on http://localhost:3000 && yarn start:electron\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -36,6 +37,8 @@
     ]
   },
   "devDependencies": {
-    "electron": "^4.1.4"
+    "concurrently": "^4.1.0",
+    "electron": "^4.1.4",
+    "wait-on": "^3.2.0"
   }
 }
